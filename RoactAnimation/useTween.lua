@@ -1,6 +1,7 @@
 local RunService = game:GetService('RunService');
 local TweenService = game:GetService('TweenService');
 
+local Hooks = require(script.Parent.Parent.RoactHooks);
 local Signal = require(script.Parent.Parent.Signal);
 
 local function lerp(start, goal, alpha)
@@ -27,7 +28,7 @@ local function constructAnimationInterface(play, stop, onComplete: Signal.Signal
     return Animation;
 end;
 
-local function useTween(hooks, initialValue, tweenInfo: TweenInfo)
+local function useTween(hooks: Hooks.Hooks, initialValue, tweenInfo: TweenInfo)
     local binding, setBinding = hooks.Roact.createBinding(initialValue);
 
     local playStartValue = hooks.useValue();
