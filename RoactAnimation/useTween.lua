@@ -1,8 +1,7 @@
-local ReplicatedStorage = game:GetService('ReplicatedStorage');
 local RunService = game:GetService('RunService');
 local TweenService = game:GetService('TweenService');
 
-local Signal = require(ReplicatedStorage.Src.Packages.Signal);
+local Signal = require(script.Parent.Parent.Signal);
 
 local function lerp(start, goal, alpha)
     if typeof(start) ~= typeof(goal) then
