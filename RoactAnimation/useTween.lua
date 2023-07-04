@@ -1,7 +1,7 @@
 local RunService = game:GetService('RunService');
 local TweenService = game:GetService('TweenService');
 
-local Hooks = require(script.Parent.Parent.RoactHooks);
+local React = require(script.Parent.Parent.React);
 local Signal = require(script.Parent.Parent.Signal);
 
 local function lerp(start, goal, alpha)
@@ -28,17 +28,17 @@ local function constructAnimationInterface(play, stop, onComplete: Signal.Signal
     return Animation;
 end;
 
-local function useTween(hooks: Hooks.Hooks, initialValue, tweenInfo: TweenInfo)
-    local binding, setBinding = hooks.Roact.createBinding(initialValue);
+local function useTween(initialValue, tweenInfo: TweenInfo)
+    local binding, setBinding = React.createBinding(initialValue);
 
-    local playStartValue = hooks.useValue();
-    local playStartTime = hooks.useValue();
-    local updateThread = hooks.useValue();
+    local playStartValue = React.useRef();
+    local playStartTime = React.useRef();
+    local updateThread = React.useRef();
 
-    local onComplete: Signal.Signal = hooks.useValue(Signal.new()).value;
-    local onCancel: Signal.Signal = hooks.useValue(Signal.new()).value;
+    local onComplete: Signal.Signal = React.useRef(Signal.new()).current;
+    local onCancel: Signal.Signal = React.useRef(Signal.new()).current;
 
-    hooks.useEffect(function()
+    React.useEffect(function()
         return function()
             if updateThread.value then
                 updateThread.value:Disconnect();
