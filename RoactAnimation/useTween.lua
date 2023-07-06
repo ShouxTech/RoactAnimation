@@ -29,7 +29,7 @@ local function constructAnimationInterface(play, stop, onComplete: Signal.Signal
 end;
 
 local function useTween(initialValue, tweenInfo: TweenInfo)
-    local binding, setBinding = React.createBinding(initialValue);
+    local binding, setBinding = React.useBinding(initialValue);
 
     local playStartValue = React.useRef();
     local playStartTime = React.useRef();
