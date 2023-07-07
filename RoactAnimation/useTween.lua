@@ -68,12 +68,11 @@ local function useTween(initialValue, tweenInfo: TweenInfo)
             local timeProgress = (tick() - playStartTime.value) / tweenInfo.Time;
             local lerpProgress = math.min(1, TweenService:GetValue(timeProgress, tweenInfo.EasingStyle, tweenInfo.EasingDirection));
 
-            if timeProgress >= 1 then
-                stop(true);
-                return;
-            end;
-
             setBinding(lerp(playStartValue.value, goal, lerpProgress));
+
+            if lerpProgress == 1 then
+                stop(true);
+            end;
         end);
     end;
 
