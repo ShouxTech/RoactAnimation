@@ -28,7 +28,7 @@ local function constructAnimationInterface(play, stop, onComplete: Signal.Signal
     return Animation;
 end;
 
-local function useTween(initialValue, tweenInfo: TweenInfo)
+local function useTween(initialValue: any, tweenInfo: TweenInfo)
     local binding, setBinding = React.useBinding(initialValue);
 
     local playStartValue = React.useRef();
@@ -40,35 +40,35 @@ local function useTween(initialValue, tweenInfo: TweenInfo)
 
     React.useEffect(function()
         return function()
-            if updateThread.value then
-                updateThread.value:Disconnect();
-                updateThread.value = nil;
+            if updateThread.current then
+                updateThread.current:Disconnect();
+                updateThread.current = nil;
             end;
         end;
     end, {});
 
-    local function stop(didFullyComplete)
-        if not updateThread.value then return; end;
+    local function stop(didFullyComplete: boolean)
+        if not updateThread.current then return; end;
 
-        updateThread.value:Disconnect();
-        updateThread.value = nil;
+        updateThread.current:Disconnect();
+        updateThread.current = nil;
 
         (didFullyComplete and onComplete or onCancel):Fire();
     end;
 
     local function play(goal)
-        if updateThread.value then -- Cancel existing tween.
+        if updateThread.current then -- Cancel existing tween.
             stop();
         end;
 
-        playStartValue.value = binding:getValue();
-        playStartTime.value = tick();
+        playStartValue.current = binding:getValue();
+        playStartTime.current = tick();
 
-        updateThread.value = RunService.Heartbeat:Connect(function()
-            local timeProgress = (tick() - playStartTime.value) / tweenInfo.Time;
+        updateThread.current = RunService.Heartbeat:Connect(function()
+            local timeProgress = (tick() - playStartTime.current) / tweenInfo.Time;
             local lerpProgress = math.min(1, TweenService:GetValue(timeProgress, tweenInfo.EasingStyle, tweenInfo.EasingDirection));
 
-            setBinding(lerp(playStartValue.value, goal, lerpProgress));
+            setBinding(lerp(playStartValue.current, goal, lerpProgress));
 
             if lerpProgress == 1 then
                 stop(true);
