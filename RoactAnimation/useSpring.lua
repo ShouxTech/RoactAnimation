@@ -14,7 +14,7 @@ local function constructAnimationInterface(play, onComplete: Signal.Signal)
     return Animation;
 end;
 
-local function useTween(dampingRatio: number, frequency: number, initialValue: any)
+local function useTween(initialValue: any, dampingRatio: number, frequency: number)
     local binding, setBinding = React.useBinding(initialValue);
 
     local spring = React.useRef(spr.new(dampingRatio, frequency, initialValue)).current;
