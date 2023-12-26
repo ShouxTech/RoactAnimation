@@ -630,6 +630,7 @@ function spr.new(dampingRatio: number, frequency: number, initialValue: any)
 	self._spring:setDampingRatio(dampingRatio);
 	self._spring:setFrequency(frequency);
 
+	self.Value = self._spring.rawGoal;
 	self._goalMet = false;
 	self._onCompletedCallback = nil;
 
