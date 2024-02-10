@@ -3,7 +3,7 @@ A simple animation interface for Roact
 
 ## Install
 Install with [wally](https://wally.run/):\
-`RoactAnimation = "shouxtech/roactanimation@0.1.7"`
+`RoactAnimation = "shouxtech/roactanimation@0.1.8"`
 
 ## Usage
 ```lua

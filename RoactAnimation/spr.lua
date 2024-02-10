@@ -653,7 +653,14 @@ function spr.new(dampingRatio: number, frequency: number, initialValue: any)
 	return self;
 end;
 
-function spr:SetGoal(goal: any)
+function spr:SetGoal(goal: any, isInstant: boolean)
+	if isInstant then
+		self._spring:setGoal(goal);
+		self.Value = self._spring:step(60); -- Simulate 60 seconds passing, technically not instant but should work in most cases.
+		self._goalMet = false;
+		return;
+	end;
+
 	self._spring:setGoal(goal);
 
 	if not self._spring:canSleep() then

@@ -30,6 +30,10 @@ local function useSpring(initialValue: any, dampingRatio: number, frequency: num
         end;
     end;
 
+    local function updateBinding()
+        setBinding(spring.Value);
+    end;
+
     React.useEffect(function()
         spring:SetOnCompletedCallback(function()
             onComplete:Fire();
@@ -42,15 +46,14 @@ local function useSpring(initialValue: any, dampingRatio: number, frequency: num
         end;
     end, {});
 
-    local function play(goal)
-        spring:SetGoal(goal);
+    local function play(goal, isInstant: boolean)
+        spring:SetGoal(goal, isInstant);
 
         if spring:IsGoalMet() then return; end;
 
         disconnectUpdateThread();
-        updateThread.current = RunService.Heartbeat:Connect(function()
-            setBinding(spring.Value);
-        end);
+        updateBinding();
+        updateThread.current = RunService.Heartbeat:Connect(updateBinding);
     end;
 
     local Animation = constructAnimationInterface(play, onComplete);
